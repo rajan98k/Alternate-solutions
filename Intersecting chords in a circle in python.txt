@@ -1,0 +1,33 @@
+def count(dp,n):
+    dp[n]=0
+    for i in range(2,n+1):
+        if dp[i-2]==-1:
+            dp=count(dp,i-2)
+        if dp[n-i]==-1:
+            dp=count(dp,n-i)
+        dp[n]+=(dp[i-2]*dp[n-i])%1000000007
+    return dp
+
+class Solution:
+    # @param A : integer
+    # @return an integer
+    def chordCnt(self, A):
+        if A*2==2:
+            return 1
+        dp=[-1 for i in range((2*A)+1)]
+        for i in range((2*A)+1):
+            if i%2!=0:
+                dp[i]=0
+        dp[0]=1,dp[2]=1
+        if dp[2*A]!=-1:
+            return dp[2*A]
+        n=2*A
+        dp[n]=0
+        for i in range(2,n+1):
+            if dp[i-2]==-1:
+                dp=count(dp,i-2)
+            if dp[n-i]==-1:
+                dp=count(dp,n-i)
+            dp[n]+=(dp[i-2]*dp[n-i])%1000000007
+        #print dp
+        return dp[n]%1000000007
