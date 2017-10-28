@@ -1,0 +1,61 @@
+The frequency will be populated at the leaf nodes using this approach
+
+class treenode:
+    def __init__(self,start,end,val):
+        self.start=start
+        self.end=end
+        self.val=val
+        self.left=None
+        self.right=None
+        
+def build_segment_tree(root):
+    if root.end-root.start==0:return root
+    mid=(root.end+root.start)/2
+    root.left=build_segment_tree(treenode(root.start,mid,0))
+    root.right=build_segment_tree(treenode(mid+1,root.end,0))
+    return root
+
+def push_into_tree(root,e):
+    if not root.left and not root.right:
+        root.val+=1
+        return 
+    mid=(root.start+root.end)/2
+    if e<=mid and e>=root.start:push_into_tree(root.left,e)
+    elif e>=mid+1 and e<=root.end:push_into_tree(root.right,e)
+    
+def traverse_and_findmax(root,fr):
+    if not root.left and not root.right:return max(fr,root.val)
+    else:return max(traverse_and_findmax(root.left,fr),traverse_and_findmax(root.right,fr),fr)
+    
+def traverse_test(root):
+    if not root.left and not root.right:
+        print root.start,root.end,root.val
+        return
+    else:
+        traverse_test(root.left)
+        traverse_test(root.right)
+
+def solve(start,end,ti):
+    #print ti
+    #print start,end
+    root=treenode(start,end,0)
+    root=build_segment_tree(root)
+    #print 12
+    for e in ti:
+        #some multiple related operation here over time period.
+        if e>root.end:
+            continue
+        rem=root.start%e
+        if rem==0:
+            first_element=root.start
+            while first_element<=root.end:
+                push_into_tree(root,first_element)
+                first_element+=e
+        else:
+            first_element=root.start+e-rem
+            while first_element<=root.end:
+                push_into_tree(root,first_element)
+                first_element+=e
+    traverse_test(root)
+    return traverse_and_findmax(root,0)
+    
