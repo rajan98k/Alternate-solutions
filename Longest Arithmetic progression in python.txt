@@ -1,4 +1,4 @@
-	# @param A : tuple of integers
+    # @param A : tuple of integers
     # @return an integer
     def solve(self, A):
         #With below code the time complexity will be O(N^2) at worst.
